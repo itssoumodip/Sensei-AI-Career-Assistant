@@ -23,14 +23,14 @@ const Header = () => {
                 <div className='flex items-center space-x-2 md:space-x-4'>
                     <SignedIn>
                         <Link href={'/dashboard'}>
-                            <Button>
+                            <Button variant='outline'>
                                 <LayoutDashboard className='h-4 w-4' />
                                 <span className='hidden sm:block'>Industry Insight</span>
                             </Button>
                         </Link>
                         <DropdownMenu>
-                            <DropdownMenuTrigger>
-                                <Button>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="default">
                                     <StarsIcon className='h-4 w-4' />
                                     <span className='hidden sm:block'>Growth Tools</span>
                                     <ChevronDown className='ml-2 h-4 w-4' />
@@ -67,15 +67,17 @@ const Header = () => {
                         </SignUpButton>
                     </SignedOut>
                     <SignedIn>
-                        <UserButton 
-                            appearance={{
-                                elements: {
-                                    avatarBox: "w-20 h-20",
-                                    userButtonPopoverCard: "shadow-xl",
-                                    userPreviewMainIdentifier: "font-semibold"
-                                },
-                            }}
-                        />
+                        <div className="scale-150 50 mt-2">
+                            <UserButton
+                                appearance={{
+                                    elements: {
+                                        userButtonPopoverCard: "shadow-xl",
+                                        userPreviewMainIdentifier: "font-semibold"
+                                    },
+                                }}
+                                afterSignOutUrl='/'
+                            />
+                        </div>
                     </SignedIn>
                 </div>
             </nav>
