@@ -7,10 +7,10 @@ import { dark } from "@clerk/themes";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
+export const metadata = { 
   title: "Sensei",
   description: "AI Career Assistant",
-};
+}; 
 
 export default function RootLayout({ children }) {
   return (
