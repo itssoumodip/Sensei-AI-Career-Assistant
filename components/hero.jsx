@@ -6,24 +6,25 @@ import Image from 'next/image'
 
 const HeroSection = () => {
 
-    const imageRef = useRef(null);
-
-    useEffect(()=> { 
-
+    const imageRef = useRef(null); useEffect(() => {
         const imageElement = imageRef.current;
-        
-        const  handleScroll = () => {
-            const scrollPosition = window.scrollY;
-            const scrollThreshold = 100; 
+        if (!imageElement) return;
 
-            if(scrollPosition > scrollThreshold) {
+        const handleScroll = () => {
+            const scrollPosition = window.scrollY;
+            const scrollThreshold = 250;
+            if (scrollPosition > scrollThreshold) {
                 imageElement.classList.add("scrolled");
+            } else {
+                imageElement.classList.remove("scrolled");
             }
         };
+        handleScroll();
 
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-     }, []);
+    }, []);
+
 
     return (
         <section className='w-full pt-36 md:pt-48 pb-10'>
@@ -46,15 +47,14 @@ const HeroSection = () => {
                         <Button size="lg" className="px-8">Get Started</Button>
                     </Link>
                 </div>
-
-                <div className='hero-image-wrapper mt-5 md:mt-0'>
-                    <div ref={imageRef} className='hero-image'>
+                <div className="hero-image-wrapper mt-5 md:-mt-10">
+                    <div ref={imageRef} className="hero-image">
                         <Image
-                            src={"/banner.png"}
+                            src="/banner.png"
                             width={1280}
                             height={720}
-                            alt='Banner Image'
-                            className='rounded-lg shadow-2xl border mx-auto'
+                            alt="Dashboard Preview"
+                            className="rounded-lg border mx-auto"
                             priority
                         />
                     </div>

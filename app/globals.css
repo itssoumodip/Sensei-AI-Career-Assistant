@@ -155,16 +155,21 @@
   );
 }
 
+
 .hero-image-wrapper {
   perspective: 1000px;
+  overflow: visible;
 }
 
 .hero-image {
-  transform: rotateX(15deg) scale(1);
-  transition: transform 0.5s ease-out;
+  transform: rotateX(15deg) scale(0.9);
+  transition: all 0.5s ease-out;
   will-change: transform;
+  /* transform-origin: center bottom; */
+  /* box-shadow: 0 30px 60px rgba(0,0,0,0.4); */
 }
 
 .hero-image.scrolled {
-  transform: rotateX(0deg) scale(1) translateY(40px);
+  transform: rotateX(0deg) scale(0.9) translateY(40px);
+  /* box-shadow: 0 10px 30px rgba(0,0,0,0.2); */
 }
