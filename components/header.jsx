@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Button } from './ui/button'
 import { ChevronDown, FileText, GraduationCap, LayoutDashboard, PenBox, StarsIcon } from 'lucide-react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu'
 
 const Header = () => {
     return (
@@ -16,11 +16,11 @@ const Header = () => {
                         alt='Sensei Logo'
                         width={50}
                         height={50}
-                        className='h-52 py-2 w-auto mt-2 object-contain'
+                        className='h-52 w-30 md:w-full py-2 mt-1 object-contain'
                     />
                 </Link>
 
-                <div className='flex items-center space-x-2 md:space-x-4'>
+                <div className='flex items-center space-x-2 md:space-x-4 '>
                     <SignedIn>
                         <Link href={'/dashboard'}>
                             <Button variant='outline'>
@@ -81,7 +81,6 @@ const Header = () => {
                     </SignedIn>
                 </div>
             </nav>
-
         </header>
     )
 }
