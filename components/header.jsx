@@ -16,7 +16,7 @@ const Header = () => {
                         alt='Sensei Logo'
                         width={50}
                         height={50}
-                        className='h-26 w-30 md:w-full py-2 mt-1 object-contain'
+                        className='h-22 w-30 md:w-full py-2 mt-1 object-contain'
                     />
                 </Link>
 
