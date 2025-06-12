@@ -12,11 +12,11 @@ const Header = () => {
             <nav className='container mx-auto -mt-1 px-4 h-19 flex items-center justify-between'>
                 <Link href='/' >
                     <Image
-                        src='/sensei.svg'
+                        src='/sensei1.svg'
                         alt='Sensei Logo'
                         width={50}
                         height={50}
-                        className='h-52 w-30 md:w-full py-2 mt-1 object-contain'
+                        className='h-26 w-30 md:w-full py-2 mt-1 object-contain'
                     />
                 </Link>
 
