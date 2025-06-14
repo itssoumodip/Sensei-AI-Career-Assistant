@@ -13,3 +13,46 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id               String            @id @default(uuid())
+  clerkUserId      String            @unique
+  email            String            @unique
+  name             String?
+  imageUrl         String?
+  industry         String?
+  industryInsights IndustryInsights? @relation(fields: [industry], references: [industry])
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  //profile fields
+  bio        String?
+  experience Int?
+  skills     String[]
+
+  assessments Assessment[]
+  resume      Resume?
+  coverLetter CoverLetter[]
+}
+
+model Assessment {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation((fields: [userId], references: [id]))
+  quizScore     Float
+  questions     Json[]
+  category      String
+  imporvemetTip String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Resume {
+  id String @id @default(cuid())
+}
+model CoverLetter {}
+
+model IndustryInsights {
+}
