@@ -1,5 +1,7 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
+import { db } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function updateUser(data) {
     const { userId } = await auth();
@@ -60,6 +62,8 @@ export async function updateUser(data) {
             {
                 timeout: 10000,
             });
+
+        revalidatePath("/");
         return result.user;
     } catch (error) {
         console.error("Error updating user and industry:", error.message);
