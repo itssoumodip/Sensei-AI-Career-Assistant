@@ -10,7 +10,9 @@
 !.yarn/releases
 !.yarn/versions
 
+
 # testing
+install.txt
 /coverage
 
 # next.js
