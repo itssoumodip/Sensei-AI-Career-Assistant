@@ -82,7 +82,7 @@ model IndustryInsight {
   users User[]
 
   //salary data
-  salaryRange Json[]
+  salaryRanges Json[]
 
   //industry trends
   growthRate  Float
