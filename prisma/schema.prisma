@@ -68,6 +68,7 @@ model CoverLetter {
   jobDescription String?
   companyName    String
   jobTitle       String
+  status         String   @default("completed")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
