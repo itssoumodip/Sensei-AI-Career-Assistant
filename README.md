@@ -1,37 +1,129 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Sensei - Your AI Career Development Assistant
 
-## Getting Started
+![Sensei Logo](public/sensei.svg)
 
-First, run the development server:
+Sensei is a modern, AI-powered career development platform built with Next.js that helps job seekers enhance their job application process through intelligent tools and personalized assistance.
 
+## 🌟 Features
+
+### 📝 AI Cover Letter Generator
+- Generate tailored cover letters using AI
+- Customize and manage multiple versions
+- Real-time preview and editing capabilities
+- Track status of each cover letter
+
+### 🎯 Mock Interview Preparation
+- Interactive interview practice sessions
+- Performance tracking and analytics
+- Detailed feedback and improvement suggestions
+- Visual performance charts and statistics
+- Industry-specific question banks
+
+### 📄 Resume Management
+- Professional resume builder and manager
+- Industry-specific templates and suggestions
+- Track multiple versions of your resume
+- Get AI-powered optimization tips
+
+### 📊 Personal Dashboard
+- Track your job application progress
+- View performance metrics and statistics
+- Manage all your career documents in one place
+- Get insights into your interview performance
+
+## 🛠️ Technical Stack
+
+- **Frontend Framework**: Next.js 14+ with App Router
+- **UI Components**: Shadcn UI components with modern design
+- **Authentication**: Next-Auth with secure sign-in/sign-up
+- **Database**: Prisma ORM with PostgreSQL
+- **AI Integration**: Advanced AI models for content generation
+- **Background Jobs**: Inngest for task processing
+- **Styling**: Tailwind CSS with custom components
+
+## 🔧 Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/sensei.git
+cd sensei
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+cp .env.example .env
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run database migrations:
+```bash
+npx prisma migrate dev
+```
 
-## Learn More
+5. Start the development server:
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Visit `http://localhost:3000` to see the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Create an account or sign in
+2. Complete the onboarding process
+3. Start using the tools:
+   - Generate AI cover letters
+   - Practice mock interviews
+   - Manage your resumes
+   - Track your progress in the dashboard
 
-## Deploy on Vercel
+## 💡 How It Works
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Cover Letter Generation**
+   - Input job description and your experience
+   - AI generates a tailored cover letter
+   - Edit and customize as needed
+   - Save and manage multiple versions
+   - Track application status
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-"# Sensai-AI-Career-Assistant" 
+2. **Interview Practice**
+   - Select industry and role
+   - Practice with AI-generated questions
+   - Receive instant feedback
+   - Track your improvement over time
+   - Review performance analytics
+
+3. **Resume Management**
+   - Create and store multiple resumes
+   - Get AI-powered suggestions
+   - Track different versions
+   - Export in various formats
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🌐 Deployment
+
+The application is optimized for deployment on Vercel:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/sensei)
+
+## 🙏 Acknowledgments
+
+- Next.js team for the amazing framework
+- Vercel for hosting and deployment
+- Shadcn UI for beautiful components
+- All contributors and users of Sensei
+
+---
+
+Built with ❤️ for job seekers worldwide
