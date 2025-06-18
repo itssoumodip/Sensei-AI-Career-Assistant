@@ -137,22 +137,34 @@ export async function generateCoverLetter(data) {
 
 export async function getCoverLetters() {
   const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
+  
+  if (!userId) {
+      throw new Error("Unauthorized");
+  }
 
-  const user = await db.user.findUnique({
-    where: { clerkUserId: userId },
-  });
+  try {
+    const user = await db.user.findUnique({
+        where: {
+            clerkUserId: userId,
+        },
+        include: {
+            coverLetter: {
+                orderBy: {
+                    createdAt: 'desc'
+                }
+            }
+        }
+    });
 
-  if (!user) throw new Error("User not found");
+    if (!user) {
+        throw new Error("Onboarding required");
+    }
 
-  return await db.coverLetter.findMany({
-    where: {
-      userId: user.id,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+    return user.coverLetter;
+  } catch (error) {
+    console.error("Error fetching cover letters:", error);
+    throw new Error("Failed to fetch cover letters");
+  }
 }
 
 export async function getCoverLetter(id) {

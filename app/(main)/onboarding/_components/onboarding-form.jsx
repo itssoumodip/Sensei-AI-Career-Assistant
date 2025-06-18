@@ -33,11 +33,13 @@ import { updateUser } from "@/actions/user";
 const OnboardingForm = ({ industries }) => {
   const router = useRouter();
   const [selectedIndustry, setSelectedIndustry] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     loading: updateLoading,
     fn: updateUserFn,
     data: updateResult,
+    error: updateError,
   } = useFetch(updateUser);
 
   const {
@@ -49,29 +51,52 @@ const OnboardingForm = ({ industries }) => {
   } = useForm({
     resolver: zodResolver(onboardingSchema),
   });
-
   const onSubmit = async (values) => {
+    if (isSubmitting) return;
+
     try {
-      const formattedIndustry = `${values.industry}-${values.subIndustry
-        .toLowerCase()
-        .replace(/ /g, "-")}`;
+      setIsSubmitting(true);
 
-      await updateUserFn({
-        ...values,
-        industry: formattedIndustry,
-      });
-    } catch (error) {
-      console.error("Onboarding error:", error);
-    }
-  };
+      const formData = {
+        industry: values.industry,
+        subIndustry: values.subIndustry || values.industry,
+        experience: parseInt(values.experience, 10),
+        skills: values.skills
+          ? values.skills.split(",").map((s) => s.trim()).filter(Boolean)
+          : [],
+        bio: values.bio || "",
+      };
 
-  useEffect(() => {
-    if (updateResult?.success && !updateLoading) {
+      console.log("Submitting form data:", formData); // Debug log
+
+      const result = await updateUserFn(formData);
+      console.log("API response:", result); // Debug log
+
+      if (!result || !result.success) {
+        console.error("Update failed:", result); // Debug log
+        toast.error(result?.error || "Failed to update profile. Please try again.");
+        return;
+      }
+
       toast.success("Profile completed successfully!");
       router.push("/dashboard");
       router.refresh();
+    } catch (error) {
+      console.error("Onboarding error:", error);
+      toast.error(error.message || "Failed to update profile. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-  }, [updateResult, updateLoading]);
+  };
+
+  // Show error toast if update fails
+  useEffect(() => {
+    if (updateError) {
+      toast.error(
+        updateError.message || "Failed to update profile. Please try again."
+      );
+    }
+  }, [updateError]);
 
   const watchIndustry = watch("industry");
 

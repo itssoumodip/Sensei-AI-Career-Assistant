@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { deleteCoverLetter } from "@/actions/cover-letter";
 
-export default function CoverLetterList({ coverLetters }) {
+export default function CoverLetterList({ coverLetters = [] }) {
   const router = useRouter();
 
   const handleDelete = async (id) => {
@@ -38,7 +38,7 @@ export default function CoverLetterList({ coverLetters }) {
     }
   };
 
-  if (!coverLetters?.length) {
+  if (!Array.isArray(coverLetters) || coverLetters.length === 0) {
     return (
       <Card>
         <CardHeader>

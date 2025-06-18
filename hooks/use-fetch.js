@@ -14,9 +14,12 @@ const useFetch = (cb) => {
       const response = await cb(...args);
       setData(response);
       setError(null);
+      return response; // Return the response so it can be used in the component
     } catch (error) {
+      console.error("API Error:", error);
       setError(error);
-      toast.error(error.message);
+      toast.error(error.message || "An unexpected error occurred");
+      throw error; // Re-throw the error so it can be caught in the component
     } finally {
       setLoading(false);
     }

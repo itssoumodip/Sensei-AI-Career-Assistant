@@ -10,96 +10,63 @@ export async function updateUser(data) {
         throw new Error("Unauthorized");
     }
 
-    const user = await db.user.findUnique({
-        where: {
-            clerkUserId: userId,
-        },
-    });
+    // Validate required fields
+    if (!data.industry) {
+        throw new Error("Industry is required");
+    }
 
-    if (!user) {
-        throw new Error("User not found");
-    }    try {
-        const result = await db.$transaction(
-            async (tx) => {
-                //find if the industry exists
-                let industryInsight = await tx.industryInsight.findUnique({
-                    where: {
-                        industry: data.industry,
-                    }
-                })
-                //if industry doesnot exist, create it with default values - will replace it with ai leter
-                if (!industryInsight) {
-                    try {
-                        const insights = await generateAIInsights(data.industry);
-                        
-                        // Validate enum values before creating
-                        const validDemandLevels = ["HIGH", "MEDIUM", "LOW"];
-                        const validMarketOutlooks = ["POSITIVE", "NEUTRAL", "NEGATIVE"];
-                        
-                        const demandLevel = validDemandLevels.includes(insights.demandLevel) 
-                            ? insights.demandLevel 
-                            : "MEDIUM";
-                            
-                        const marketOutlook = validMarketOutlooks.includes(insights.marketOutlook)
-                            ? insights.marketOutlook
-                            : "NEUTRAL";
-                        
-                        industryInsight = await tx.industryInsight.create({
-                            data: {
-                                industry: data.industry,
-                                salaryRanges: insights.salaryRanges || [],
-                                growthRate: insights.growthRate || 0,
-                                demandLevel: demandLevel,
-                                topSkills: insights.topSkills || [],
-                                marketOutlook: marketOutlook,
-                                keyTrends: insights.keyTrends || [],
-                                recommendedSkills: insights.recommendedSkills || [],
-                                nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-                            },
-                        });
-                    } catch (insightError) {
-                        console.error("Error generating industry insights:", insightError);
-                        
-                        // Create with fallback default values if AI generation fails
-                        industryInsight = await tx.industryInsight.create({
-                            data: {
-                                industry: data.industry,
-                                salaryRanges: [],
-                                growthRate: 0,
-                                demandLevel: "MEDIUM",
-                                topSkills: [],
-                                marketOutlook: "NEUTRAL",
-                                keyTrends: [],
-                                recommendedSkills: [],
-                                nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-                            },
-                        });
-                    }
-                }
-                //update the user
-                const updateUser = await tx.user.update({
-                    where: {
-                        id: user.id,
-                    },
-                    data: {
-                        industry: data.industry,
-                        experience: data.experience,
-                        bio: data.bio,
-                        skills: data.skills,
-                    },
-                });
+    if (typeof data.experience !== 'number') {
+        throw new Error("Years of experience must be a number");
+    }
 
-                return { updateUser, industryInsight };
+    try {
+        const user = await db.user.findUnique({
+            where: {
+                clerkUserId: userId,
             },
-            {
-                timeout: 10000,
-            });
+        });
 
-        revalidatePath("/");
-        return result.user;
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        // First, ensure the industry insight exists
+        const insights = await generateAIInsights(data.industry);
+        
+        // Create or update industry insights first
+        await db.industryInsight.upsert({
+            where: {
+                industry: data.industry,
+            },
+            update: {
+                ...insights,
+                nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            },
+            create: {
+                industry: data.industry,
+                ...insights,
+                nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            },
+        });
+
+        // Now update the user after industry insight is created
+        const updatedUser = await db.user.update({
+            where: {
+                id: user.id
+            },
+            data: {
+                industry: data.industry,
+                experience: data.experience,
+                skills: Array.isArray(data.skills) ? data.skills : [],
+                bio: data.bio || null
+            }
+        });
+
+        revalidatePath("/dashboard");
+        return { success: true, user: updatedUser };
     } catch (error) {
-        console.error("Error updating user and industry:", error.message);
-        throw new Error("Failed to update profile" + error.message);
+        console.error("Error updating user:", error);
+        throw new Error(error.message || "Failed to update profile");
     }
 }
 
@@ -115,25 +82,16 @@ export async function getUserOnboardingStatus() {
         },
     });
 
+    // If user doesn't exist in our database yet, they need onboarding
     if (!user) {
-        throw new Error("User not found");
+        return { isOnboarded: false };
     }
 
-    try {
-        const user = await db.user.findUnique({
-            where: {
-                clerkUserId: userId,
-            },
-            select: {
-                industry: true,
-            }
-        })
+    // If user exists but doesn't have required fields, they need onboarding
+    const isOnboarded = Boolean(
+        user.industry && 
+        user.experience
+    );
 
-        return {
-            isOnboarded: !!user?.industry,
-        };
-    } catch (error) {
-        console.error("Error fetching user onboarding status:", error.message);
-        throw new Error("Failed to fetch onboarding status");
-    }
+    return { isOnboarded };
 }

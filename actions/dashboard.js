@@ -65,6 +65,7 @@ export const generateAIInsights = async (industry) => {
 
 export async function getIndustryInsights() {
     const { userId } = await auth();
+    
     if (!userId) {
         throw new Error("Unauthorized");
     }
@@ -79,7 +80,13 @@ export async function getIndustryInsights() {
     });
 
     if (!user) {
-        throw new Error("User not found");
+        // If user doesn't exist in our database, they need to complete onboarding
+        throw new Error("Onboarding required");
+    }
+
+    if (!user.industry) {
+        // If user exists but doesn't have an industry set, they need to complete onboarding
+        throw new Error("Onboarding required");
     }
 
     if (!user.industryInsight) {
