@@ -1,7 +1,5 @@
 # Sensei - Your AI Career Development Assistant
 
-![Sensei Logo](public/sensei.svg)
-
 Sensei is a modern, AI-powered career development platform built with Next.js that helps job seekers enhance their job application process through intelligent tools and personalized assistance.
 
 ## 🌟 Features
